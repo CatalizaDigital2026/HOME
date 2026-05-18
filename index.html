@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Grifol | Plataforma Digital de Gestión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === TOKENS: LUMINOSO & HEALTH-TECH (Migrado del diseño Médico) === */
+        :root {
+            --medical-green-light: #E8F5E9;
+            --medical-green: #43A047;
+            --medical-green-dark: #2E7D32;
+            --medical-green-darker: #1B5E20;
+            
+            --bg-white: #FFFFFF;
+            --bg-gray: #F8FAFC;
+            --bg-accent: #E3F2FD;
+            
+            --text-dark: #1e293b;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            
+            --gold-premium: #D4AF37;    
+            
+            --radius-lg: 24px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(46, 125, 50, 0.1);
+            --shadow-hover: 0 20px 40px -5px rgba(46, 125, 50, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px;}
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; line-height: 1.2; color: var(--medical-green-darker); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10;}
+        .text-center { text-align: center; }
+
+        /* GLOSARIO TOOLTIP (Adaptado al nuevo diseño) */
+        .term {
+            color: var(--medical-green-dark);
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-underline-offset: 4px;
+            text-decoration-color: rgba(67, 160, 71, 0.4);
+            cursor: help;
+            position: relative;
+            transition: var(--transition);
+        }
+        .term:hover {
+            color: var(--medical-green);
+            text-decoration-color: var(--medical-green);
+            background-color: var(--medical-green-light);
+        }
+        .term::before {
+            content: attr(data-tooltip);
+            position: absolute; bottom: calc(100% + 10px); left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            background: var(--medical-green-darker); color: var(--bg-white);
+            padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 400; line-height: 1.5;
+            white-space: normal; width: 280px; max-width: 80vw; text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease; z-index: 9999;
+            font-family: 'Manrope', sans-serif; text-decoration: none;
+        }
+        .term::after {
+            content: ''; position: absolute; bottom: calc(100% + 2px); left: 50%;
+            transform: translateX(-50%); border: 8px solid transparent;
+            border-top-color: var(--medical-green-darker); opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease; z-index: 9999;
+        }
+        .term:hover::before, .term:hover::after {
+            opacity: 1; transform: translateX(-50%) translateY(0);
+        }
+
+        /* BOTONES */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 14px 32px; border-radius: 50px; font-weight: 700; font-size: 15px;
+            cursor: pointer; transition: var(--transition); border: none;
+            font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;
+        }
+        .btn-primary { background-color: var(--medical-green); color: var(--bg-white); box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3); }
+        .btn-primary:hover { background-color: var(--medical-green-dark); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4); }
+        .btn-outline { background-color: transparent; color: var(--medical-green-dark); border: 2px solid var(--medical-green-dark); }
+        .btn-outline:hover { background-color: var(--medical-green-light); color: var(--medical-green-darker); }
+        
+        .badge {
+            display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 50px;
+            font-size: 12px; font-weight: 700; font-family: 'Outfit', sans-serif;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .badge-gold { background-color: #FFF8E1; color: #F57F17; border: 1px solid #FBC02D; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); padding: 16px 0; border-bottom: 1px solid #E2E8F0;
+            transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 20px; color: var(--medical-green-dark); display: flex; align-items: center; gap: 8px;}
+        .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--medical-green); }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a:not(.btn) { font-size: 14px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a:not(.btn):hover { color: var(--medical-green); }
+
+        /* HERO (Limpio y Profesional) */
+        .hero { padding: 150px 0 80px; min-height: 90vh; display: flex; align-items: center; background: linear-gradient(135deg, #FFFFFF 0%, #E8F5E9 100%); }
+        .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+        .hero-text h1 { font-size: clamp(2.8rem, 4vw, 3.8rem); margin-bottom: 24px; font-weight: 800; letter-spacing: -1px; color: var(--medical-green-darker); }
+        .hero-text h1 span { color: var(--medical-green); }
+        .hero-text p { font-size: 1.15rem; color: var(--text-main); margin-bottom: 32px; max-width: 500px; }
+        
+        .profile-frame {
+            padding: 16px; background: var(--bg-white); border-radius: var(--radius-md);
+            border: 1px solid #E2E8F0; position: relative;
+            transform: rotate(2deg); transition: var(--transition); box-shadow: var(--shadow-md);
+        }
+        .profile-frame:hover { transform: rotate(0deg) scale(1.02); border-color: var(--medical-green); }
+        .profile-frame::before {
+            content: ''; position: absolute; top: -12px; left: -12px; right: 20px; bottom: 20px;
+            border: 2px solid var(--medical-green-light); z-index: -1; border-radius: inherit;
+        }
+        .profile-photo {
+            width: 100%; height: 480px; object-fit: cover; border-radius: 8px; filter: contrast(105%);
+        }
+        .frame-caption {
+            text-align: center; margin-top: 16px; font-family: 'Outfit', sans-serif;
+            font-size: 15px; color: var(--medical-green-dark); font-weight: 600; font-style: italic;
+        }
+
+        /* SECCIONES */
+        .section-padding { padding: 100px 0; }
+        .section-title { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 16px; letter-spacing: -1px; text-align: center; color: var(--medical-green-darker);}
+        .section-subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 60px; text-align: center; }
+
+        /* SPOTLIGHT CARDS (Ahora limpias, blancas y con sombras) */
+        .cards-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .spotlight-card {
+            background-color: var(--bg-white); border-radius: var(--radius-lg); border: 1px solid #E2E8F0;
+            padding: 40px 32px; display: flex; flex-direction: column; position: relative; overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--medical-green);
+        }
+        .spotlight-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-top-color: var(--medical-green-dark);}
+        
+        .menu-icon { font-size: 36px; margin-bottom: 16px; }
+        .spotlight-card h3 { font-size: 22px; margin-bottom: 12px; font-weight: 800; line-height: 1.3; color: var(--medical-green-darker);}
+        .spotlight-card > p { color: var(--text-main); font-size: 14.5px; margin-bottom: 16px; flex-grow: 1; }
+        
+        .features-list { margin-bottom: 24px; }
+        .features-list li { font-size: 13.5px; color: var(--text-dark); margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; font-weight: 500;}
+        .features-list li::before { content: '✓'; color: var(--medical-green); font-weight: 800; font-size: 14px;}
+
+        .menu-details {
+            background-color: var(--bg-gray); padding: 16px; border-radius: var(--radius-md);
+            margin-bottom: 24px; border: 1px dashed #CBD5E1;
+        }
+        .menu-details div { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; }
+        .menu-details span { color: var(--text-muted); font-weight: 600;}
+        .menu-details strong { color: var(--text-dark); font-family: 'Outfit', sans-serif; }
+        .menu-price { font-size: 22px; font-weight: 800; color: var(--medical-green-dark); }
+        .disclaimer-text { font-size: 12px; color: #D32F2F; font-style: italic; margin-top: -16px; margin-bottom: 16px; display: block;}
+
+        /* GLOSARIO */
+        .glossary-box {
+            background: var(--bg-white); border-radius: var(--radius-lg); padding: 40px;
+            border: 1px solid #E2E8F0; box-shadow: var(--shadow-sm);
+        }
+        .glossary-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;
+        }
+        .glossary-item h4 { color: var(--medical-green-dark); font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;}
+        .glossary-item p { font-size: 13.5px; color: var(--text-main); line-height: 1.6; margin: 0;}
+
+        /* PROCESO */
+        .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; }
+        .process-step { padding: 40px 24px; background: var(--bg-white); border-radius: var(--radius-lg); border: 1px solid #E2E8F0; box-shadow: var(--shadow-sm);}
+        .process-step .step-number {
+            width: 50px; height: 50px; border-radius: 50%; background-color: var(--medical-green-light);
+            color: var(--medical-green-dark); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 20px;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+        }
+        .process-step h4 { font-size: 20px; margin-bottom: 12px; color: var(--medical-green-darker);}
+        .process-step p { color: var(--text-main); font-size: 14.5px; }
+
+        /* TRANSPARENCIA (Reglas claras) */
+        .rules-box {
+            padding: 50px; border-top: 4px solid var(--medical-green-dark);
+            background: var(--bg-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid #E2E8F0;
+        }
+        .rules-box h2 { font-size: 28px; margin-bottom: 24px; color: var(--medical-green-darker);}
+        .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .rule-item { background: var(--bg-gray); padding: 24px; border-radius: 12px; border: 1px solid #E2E8F0;}
+        .rule-item h4 { font-size: 18px; margin-bottom: 10px; color: var(--medical-green-dark);}
+        .rule-item p { font-size: 14.5px; color: var(--text-main); line-height: 1.6;}
+
+        /* CONTACTO */
+        .contact-box { background: var(--bg-accent); border: 1px solid #BBDEFB; padding: 60px 40px; text-align: center; border-radius: var(--radius-lg);}
+        
+        /* FOOTER */
+        .footer { padding: 40px 0; text-align: center; border-top: 1px solid #E2E8F0; color: var(--text-muted); font-size: 14px; background: var(--bg-white);}
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 992px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-text p { margin: 0 auto 32px; }
+            .hero-text .hero-ctas { justify-content: center; }
+            .profile-frame { max-width: 500px; margin: 0 auto; transform: none; }
+            .rules-grid { grid-template-columns: 1fr; gap: 30px; }
+            .process-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links a:not(.btn) { display: none; }
+            .cards-wrapper { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.3rem; }
+            .rules-box { padding: 30px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo"><div class="logo-dot"></div>Gabriel Grifol</a>
+            <div class="nav-links">
+                <a href="#menu-servicios">Servicios</a>
+                <a href="#glosario">Glosario</a>
+                <a href="#proceso">Proceso</a>
+                <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="padding: 10px 24px; font-size: 13px;">Tomemos un café</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text reveal active">
+                <div class="badge badge-gold" style="margin-bottom: 20px;">Estudiante & Asesor Digital</div>
+                <h1>Bienvenida/o a mi plataforma digital de Gestión. <br><span>¿Qué puedo hacer para aliviar tu consultorio?</span></h1>
+                <p>Soy tu futuro colega ofreciéndote ecosistemas digitales artesanales para que dejes de perder tiempo en tareas administrativas y conectes con tus pacientes de manera profesional.</p>
+                <div class="hero-ctas">
+                    <a href="#menu-servicios" class="btn btn-primary">Ver mi menú de servicios</a>
+                </div>
+            </div>
+            
+            <div class="profile-frame reveal active">
+                <img src="foto1.jpg" alt="Gabriel Grifol" class="profile-photo" style="object-position: top;">
+                <div class="frame-caption">Gabriel Grifol — 5to Año FCM UNCuyo</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu-servicios" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Servicios a la Carta</h2>
+                <p class="section-subtitle">Elige exactamente lo que necesitas hoy. Precios claros por mi gestión, sin jerga corporativa y con tiempos honestos.</p>
+            </div>
+
+            <div class="cards-wrapper" id="cards-container">
+
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">📄</div>
+                    <h3>Armado de CV & Portafolio</h3>
+                    <p>Diseño tu CV y carpeta de presentación. Ideal para residentes y postulaciones a clínicas.</p>
+                    <ul class="features-list">
+                        <li>Modelado de información con base a protocolos de reconocimiento <a href="#glosario" class="glossary-link term" data-tooltip="ATS (Applicant Tracking System): Software que las clínicas e instituciones usan para filtrar CVs automáticamente.">ATS</a></li>
+                        <li>Portafolios oficiales</li>
+                        <li>Disponibilidad de diseño de sistema digital <a href="#glosario" class="glossary-link term" data-tooltip="CRO: Estrategias de diseño para que el usuario realice una acción específica.">CRO</a></li>
+                    </ul>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo estimado:</span> <strong>3 a 5 días</strong></div>
+                        <div><span>Inversión desde:</span> <strong class="menu-price">$60 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+                
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">✍️</div>
+                    <h3>Redacción (Ghostwriting)</h3>
+                    <p>Me encargo de diseñar, maquetar y plasmar tus ideas en contenido estructurado y de forma segura. El producto final son los Guiones Segundo a Segundo de:</p>
+                    <ul class="features-list">
+                        <li>2 Reels estructurados (x sem)</li>
+                        <li>7 Historias de conexión</li>
+                        <li>1 Carrusel educativo/venta</li>
+                    </ul>
+                    <span class="disclaimer-text">*No incluye la filmación y/o edición de videos a menos que se solicite explícitamente.</span>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo:</span> <strong>Semanal</strong></div>
+                        <div><span>Inversión:</span> <strong class="menu-price">Desde $65 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">💻</div>
+                    <h3>Tu Página Web Profesional</h3>
+                    <p>Modalidad <strong>"Drop and Pick"</strong>: armo tu web, te la entrego y tienes control total. (Mantenimiento no incluido salvo solicitud explícita).</p>
+                    <ul class="features-list">
+                        <li>Modelos de página web de alta fidelidad y conversión</li>
+                        <li>Arquitectura técnica para diseño SEO</li>
+                    </ul>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo estimado:</span> <strong>7 a 15 días</strong></div>
+                        <div><span>Inversión desde:</span> <strong class="menu-price">$67 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">💬</div>
+                    <h3>Automatización WhatsApp</h3>
+                    <p>Configuro tu sistema para responder dudas operativas y agendar turnos automáticamente.</p>
+                    <ul class="features-list">
+                        <li>Vos tenés el manejo completo (activar/desactivar en distintos momentos del día)</li>
+                        <li>Consultá por sistemas de seguimiento Pro con CRM</li>
+                    </ul>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo estimado:</span> <strong>1 a 2 semanas</strong></div>
+                        <div><span>Inversión desde:</span> <strong class="menu-price">$55 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">📊</div>
+                    <h3>Sistemas y Bases de Datos</h3>
+                    <p>Ideal para gestión de mediano alcance (Centro médico/Policonsultorio [rango 50 a 250 pacientes]).</p>
+                    <ul class="features-list">
+                        <li>Migrá con nosotros de Excel a un sistema visual intuitivo de Gestión en Salud verdadero (PostgreSQL)</li>
+                        <li style="color: var(--medical-green-dark); font-weight: 700;">Consulta Gratuita por Abril-Mayo.</li>
+                    </ul>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo estimado:</span> <strong>A convenir</strong></div>
+                        <div><span>Inversión desde:</span> <strong class="menu-price" style="font-size: 16px;">$150 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+
+                <div class="spotlight-card reveal">
+                    <div class="menu-icon">🧠</div>
+                    <h3>Entrenamiento de IA Salud</h3>
+                    <p>Asistente de IA Personalizada (Custom Partner Assistant) para que Interprete con nivel Clínico, sin alucinaciones, tus tareas.</p>
+                    <ul class="features-list">
+                        <li>Redacta informes, resume investigación y extrae bibliografía APA.</li>
+                        <li>Sistema Clone-Semi que imita tu forma de hablar y parámetros de respuesta clínica.</li>
+                    </ul>
+                    <div class="menu-details" style="margin-top: auto;">
+                        <div><span>Plazo estimado:</span> <strong>10 a 20 días</strong></div>
+                        <div><span>Inversión desde:</span> <strong class="menu-price" style="font-size: 16px;">$34 USD</strong></div>
+                    </div>
+                    <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-outline" style="width: 100%;">Me interesa</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="glosario" class="section-padding" style="background: var(--bg-white);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Fidelidad de Términos</h2>
+                <p class="section-subtitle">Glosario técnico sobre la infraestructura digital que implementaremos en tu consultorio.</p>
+            </div>
+            
+            <div class="glossary-box reveal">
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <h4>ATS</h4>
+                        <p><strong>Applicant Tracking System</strong> (Sistema de Seguimiento de Candidatos). Software que utilizan las clínicas e instituciones para filtrar CVs automáticamente mediante IA antes de que los lea un humano.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>CRO</h4>
+                        <p><strong>Conversion Rate Optimization</strong> (Optimización de la Tasa de Conversión). Estrategias de diseño y psicología aplicadas para que el usuario que visita tu perfil o web realice una acción específica (ej. agendar un turno).</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Conversión</h4>
+                        <p>Proceso estratégico de convertir una consulta digital, un "like" o un mensaje de duda, en <strong>ventas o turnos reales</strong> y concretados en tu agenda.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>SEO</h4>
+                        <p><strong>Search Engine Optimization</strong>. Proceso de estructurar, programar y diseñar un sitio web técnico para que los motores de búsqueda (como Google) puedan rastrear, indexar y entender su contenido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proceso" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">¿Cómo es trabajar juntos?</h2>
+                <p class="section-subtitle">Sin vueltas, sin estrés. Un proceso pensado para respetarnos los tiempos mutuamente.</p>
+            </div>
+            
+            <div class="process-grid">
+                <div class="process-step reveal">
+                    <div class="step-number">1</div>
+                    <h4>Nos tomamos un café (virtual)</h4>
+                    <p>Hacemos una videollamada corta. Me cuentas qué te frustra de tu organización actual y veo si realmente puedo ayudarte a solucionarlo.</p>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-number">2</div>
+                    <h4>Definimos Plazos Reales</h4>
+                    <p>Reviso mis horarios de cursada y te doy una fecha de entrega precisa y un presupuesto cerrado. Si estás de acuerdo, avanzamos.</p>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-number">3</div>
+                    <h4>Entrega Artesanal</h4>
+                    <p>Diseño y configuro tu pedido. Te lo presento, hacemos los ajustes necesarios hasta que te sientas cómodo, y te lo entrego listo para usar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="transparencia" class="section-padding" style="background: var(--bg-white);">
+        <div class="container">
+            <div class="rules-box reveal">
+                <h2>Cuentas claras conservan la amistad</h2>
+                <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 32px;">Quiero que sepas exactamente cómo trabajo. Estas son las reglas para armar un sistema respetando tu presupuesto y mi tiempo como estudiante.</p>
+                
+                <div class="rules-grid">
+                    <div class="rule-item">
+                        <h4>💳 Modalidad de Pago 50/50</h4>
+                        <p>Para hacerlo sencillo y formal: el <strong>50% se abona por adelantado</strong> para iniciar las operaciones técnicas. El <strong>50% restante a la entrega</strong> del producto definitivo, probado y funcionando.</p>
+                    </div>
+                    <div class="rule-item">
+                        <h4>🔄 Versiones de Trabajo (V1.1 a V1.3)</h4>
+                        <p>El desarrollo incluye hasta <strong>3 instancias de revisión</strong> por cliente: <em>V1.1 Modelado inicial, V1.2 Semi-definitiva y V1.3 Definitiva</em>. Retocamos detalles para entregar una solución a tu medida.</p>
+                    </div>
+                    
+                    <div class="rule-item" style="grid-column: 1 / -1; border-left: 4px solid var(--medical-green); background: var(--bg-white); box-shadow: var(--shadow-sm);">
+                        <h4>🌐 Ecosistemas Web y Transparencia de Activos</h4>
+                        <p style="margin-bottom: 12px;"><strong>Beneficios de tu página web:</strong> Tener una pasarela de pago propia, un funnel de ventas directas, un muestrario o góndola virtual, integraciones con redes sociales (Instagram, WhatsApp, Facebook, TikTok) y formularios de filtrado personalizados (por nivel adquisitivo, disponibilidad de obra social, estado de salud del paciente, etc).</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong>100% de Transparencia y Titularidad:</strong> Mis servicios de estructura/diseño y el Alojamiento Web son dos cosas diferentes. Aquellos que requieran montar una web o tienda online <strong>deben contratar el Dominio y el Hosting por su cuenta</strong> usando los datos de su tarjeta (Ej: Namecheap, Squarespace para tu "www.tuejemplo.com" o Hostinger + WordPress para desarrollo de inventario online, tiendas con Mercado Pago y gestión de compras).</p>
+                        
+                        <p style="font-size: 13.5px; color: var(--text-muted);"><em>Nota importante:</em> Me encargo de que <strong>siempre seas vos el dueño absoluto de tu dominio web</strong>. Los CVs y Portafolios digitales NO requieren este tipo de alojamiento de pago; se les recomienda el hosting de GitHub Pages para tener una URL gratuita y compartirla fácilmente en redes sociales y grupos de WhatsApp.</p>
+                    </div>
+
+                    <div class="rule-item">
+                        <h4>🤝 Tu compromiso (Esencial)</h4>
+                        <p>Imploro atentamente el compromiso del profesional. Trabajaremos en una <strong>sesión de Zoom de 35-45 min</strong>, o en la resolución de una <strong>encuesta de 20-30 min</strong> para recabar toda la información necesaria antes de iniciar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="contact-box reveal">
+                <h2 style="font-size: 32px; margin-bottom: 16px; color: var(--medical-green-darker);">Hablemos de tu proyecto</h2>
+                <p style="color: var(--text-main); margin-bottom: 32px; font-size: 16px;">Si quieres delegar la tecnología que te quita tiempo de consulta, envíame un mensaje directo.</p>
+                <a href="https://wa.me/5492616792941" target="_blank" class="btn btn-primary" style="font-size: 18px; padding: 18px 40px;">
+                    <i class="fa-brands fa-whatsapp"></i> Escribir por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p style="color: var(--medical-green-dark); font-weight: 700;">Gabriel Grifol | Ecosistemas Digitales Médicos.</p>
+            <p style="margin-top: 8px;">Mendoza, Argentina. Estudiante FCM UNCuyo.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    navbar.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
+                } else {
+                    navbar.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+                }
+            });
+
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            reveals.forEach(reveal => observer.observe(reveal));
+        });
+    </script>
+</body>
+</html>
