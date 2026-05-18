@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gabriel Grifol | Plataforma Digital de Gestión</title>
+    
+    <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- LIBRERÍA DE ICONOS VECTORIALES (Reemplaza a los emojis rotos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* === TOKENS: LUMINOSO & HEALTH-TECH (Migrado del diseño Médico) === */
@@ -53,7 +58,7 @@
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10;}
         .text-center { text-align: center; }
 
-        /* GLOSARIO TOOLTIP (Adaptado al nuevo diseño) */
+        /* GLOSARIO TOOLTIP */
         .term {
             color: var(--medical-green-dark);
             font-weight: 700;
@@ -154,7 +159,7 @@
         .section-title { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 16px; letter-spacing: -1px; text-align: center; color: var(--medical-green-darker);}
         .section-subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 60px; text-align: center; }
 
-        /* SPOTLIGHT CARDS (Ahora limpias, blancas y con sombras) */
+        /* SPOTLIGHT CARDS */
         .cards-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
         .spotlight-card {
             background-color: var(--bg-white); border-radius: var(--radius-lg); border: 1px solid #E2E8F0;
@@ -164,7 +169,9 @@
         }
         .spotlight-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-top-color: var(--medical-green-dark);}
         
-        .menu-icon { font-size: 36px; margin-bottom: 16px; }
+        /* Ajuste para iconos vectoriales */
+        .menu-icon { font-size: 36px; margin-bottom: 16px; color: var(--medical-green-dark); }
+        
         .spotlight-card h3 { font-size: 22px; margin-bottom: 12px; font-weight: 800; line-height: 1.3; color: var(--medical-green-darker);}
         .spotlight-card > p { color: var(--text-main); font-size: 14.5px; margin-bottom: 16px; flex-grow: 1; }
         
@@ -212,7 +219,11 @@
         .rules-box h2 { font-size: 28px; margin-bottom: 24px; color: var(--medical-green-darker);}
         .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .rule-item { background: var(--bg-gray); padding: 24px; border-radius: 12px; border: 1px solid #E2E8F0;}
-        .rule-item h4 { font-size: 18px; margin-bottom: 10px; color: var(--medical-green-dark);}
+        
+        /* Ajuste iconos Reglas */
+        .rule-item h4 { font-size: 18px; margin-bottom: 10px; color: var(--medical-green-dark); display: flex; align-items: center;}
+        .rule-item h4 i { margin-right: 8px; font-size: 20px; color: var(--medical-green); }
+        
         .rule-item p { font-size: 14.5px; color: var(--text-main); line-height: 1.6;}
 
         /* CONTACTO */
@@ -266,7 +277,7 @@
             </div>
             
             <div class="profile-frame reveal active">
-                <img src="foto1.jpg" alt="Gabriel Grifol" class="profile-photo" style="object-position: top;">
+                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop" alt="Gabriel Grifol" class="profile-photo" style="object-position: top;">
                 <div class="frame-caption">Gabriel Grifol — 5to Año FCM UNCuyo</div>
             </div>
         </div>
@@ -282,7 +293,7 @@
             <div class="cards-wrapper" id="cards-container">
 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">📄</div>
+                    <div class="menu-icon"><i class="fa-solid fa-file-contract"></i></div>
                     <h3>Armado de CV & Portafolio</h3>
                     <p>Diseño tu CV y carpeta de presentación. Ideal para residentes y postulaciones a clínicas.</p>
                     <ul class="features-list">
@@ -298,7 +309,7 @@
                 </div>
                 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">✍️</div>
+                    <div class="menu-icon"><i class="fa-solid fa-pen-nib"></i></div>
                     <h3>Redacción (Ghostwriting)</h3>
                     <p>Me encargo de diseñar, maquetar y plasmar tus ideas en contenido estructurado y de forma segura. El producto final son los Guiones Segundo a Segundo de:</p>
                     <ul class="features-list">
@@ -315,7 +326,7 @@
                 </div>
 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">💻</div>
+                    <div class="menu-icon"><i class="fa-solid fa-laptop-code"></i></div>
                     <h3>Tu Página Web Profesional</h3>
                     <p>Modalidad <strong>"Drop and Pick"</strong>: armo tu web, te la entrego y tienes control total. (Mantenimiento no incluido salvo solicitud explícita).</p>
                     <ul class="features-list">
@@ -330,7 +341,7 @@
                 </div>
 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">💬</div>
+                    <div class="menu-icon"><i class="fa-brands fa-whatsapp"></i></div>
                     <h3>Automatización WhatsApp</h3>
                     <p>Configuro tu sistema para responder dudas operativas y agendar turnos automáticamente.</p>
                     <ul class="features-list">
@@ -345,7 +356,7 @@
                 </div>
 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">📊</div>
+                    <div class="menu-icon"><i class="fa-solid fa-server"></i></div>
                     <h3>Sistemas y Bases de Datos</h3>
                     <p>Ideal para gestión de mediano alcance (Centro médico/Policonsultorio [rango 50 a 250 pacientes]).</p>
                     <ul class="features-list">
@@ -360,7 +371,7 @@
                 </div>
 
                 <div class="spotlight-card reveal">
-                    <div class="menu-icon">🧠</div>
+                    <div class="menu-icon"><i class="fa-solid fa-brain"></i></div>
                     <h3>Entrenamiento de IA Salud</h3>
                     <p>Asistente de IA Personalizada (Custom Partner Assistant) para que Interprete con nivel Clínico, sin alucinaciones, tus tareas.</p>
                     <ul class="features-list">
@@ -443,16 +454,16 @@
                 
                 <div class="rules-grid">
                     <div class="rule-item">
-                        <h4>💳 Modalidad de Pago 50/50</h4>
+                        <h4><i class="fa-regular fa-credit-card"></i> Modalidad de Pago 50/50</h4>
                         <p>Para hacerlo sencillo y formal: el <strong>50% se abona por adelantado</strong> para iniciar las operaciones técnicas. El <strong>50% restante a la entrega</strong> del producto definitivo, probado y funcionando.</p>
                     </div>
                     <div class="rule-item">
-                        <h4>🔄 Versiones de Trabajo (V1.1 a V1.3)</h4>
+                        <h4><i class="fa-solid fa-rotate-right"></i> Versiones de Trabajo (V1.1 a V1.3)</h4>
                         <p>El desarrollo incluye hasta <strong>3 instancias de revisión</strong> por cliente: <em>V1.1 Modelado inicial, V1.2 Semi-definitiva y V1.3 Definitiva</em>. Retocamos detalles para entregar una solución a tu medida.</p>
                     </div>
                     
                     <div class="rule-item" style="grid-column: 1 / -1; border-left: 4px solid var(--medical-green); background: var(--bg-white); box-shadow: var(--shadow-sm);">
-                        <h4>🌐 Ecosistemas Web y Transparencia de Activos</h4>
+                        <h4><i class="fa-solid fa-globe"></i> Ecosistemas Web y Transparencia de Activos</h4>
                         <p style="margin-bottom: 12px;"><strong>Beneficios de tu página web:</strong> Tener una pasarela de pago propia, un funnel de ventas directas, un muestrario o góndola virtual, integraciones con redes sociales (Instagram, WhatsApp, Facebook, TikTok) y formularios de filtrado personalizados (por nivel adquisitivo, disponibilidad de obra social, estado de salud del paciente, etc).</p>
                         
                         <p style="margin-bottom: 12px;"><strong>100% de Transparencia y Titularidad:</strong> Mis servicios de estructura/diseño y el Alojamiento Web son dos cosas diferentes. Aquellos que requieran montar una web o tienda online <strong>deben contratar el Dominio y el Hosting por su cuenta</strong> usando los datos de su tarjeta (Ej: Namecheap, Squarespace para tu "www.tuejemplo.com" o Hostinger + WordPress para desarrollo de inventario online, tiendas con Mercado Pago y gestión de compras).</p>
@@ -461,7 +472,7 @@
                     </div>
 
                     <div class="rule-item">
-                        <h4>🤝 Tu compromiso (Esencial)</h4>
+                        <h4><i class="fa-solid fa-handshake-angle"></i> Tu compromiso (Esencial)</h4>
                         <p>Imploro atentamente el compromiso del profesional. Trabajaremos en una <strong>sesión de Zoom de 35-45 min</strong>, o en la resolución de una <strong>encuesta de 20-30 min</strong> para recabar toda la información necesaria antes de iniciar.</p>
                     </div>
                 </div>
